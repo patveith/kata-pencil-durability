@@ -3,8 +3,8 @@
 #
 class Pencil
 
-  def initialize
-    @paper = Paper.new
+  def initialize(paper = Paper.new)
+    @paper = paper
   end
 
   def write(input)

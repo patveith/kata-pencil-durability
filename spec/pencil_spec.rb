@@ -14,6 +14,18 @@ describe Pencil do
 			it "should be a pencil object" do
 				expect(@pencil).to be_instance_of(Pencil)
 			end
+
+			it "should have a paper object" do
+				expect(@pencil.instance_variable_get("@paper")).to be_instance_of(Paper)
+			end
+		end
+
+		context "when a new class is initialized with a paper object" do
+			it "should have that paper object" do
+				paper = Paper.new
+				pencil = Pencil.new(paper)
+				expect(pencil.instance_variable_get("@paper")).to eq(paper)
+			end
 		end
 	end
 

@@ -16,9 +16,10 @@ describe Paper do
 
     context "when a paper is written on by a pencil" do
       it "should contain the written text" do
-        pencil = Pencil.new
+        paper = Paper.new
+        pencil = Pencil.new(paper)
         pencil.write("hello")
-        expect(pencil.instance_variable_get("@paper").text).to eq("hello")
+        expect(paper.text).to eq("hello")
       end
     end
   end
