@@ -97,5 +97,22 @@ describe Pencil do
 				expect(@pencil.instance_variable_get("@paper").text).to eq("Hello World\n")
 			end
 		end
+
+		context "when a pencil has no durability left" do
+			it "should only write spaces" do
+				@pencil = Pencil.new(Paper.new, 0)
+				@pencil.write("hello world")
+				expect(@pencil.instance_variable_get("@paper").text).to eq("           ")
+			end
+		end
+
+		context "when a pencil runs out of durability during writing" do
+			it "should write characters while it has durability remaining" do
+				@pencil = Pencil.new(Paper.new, 7)
+				@pencil.write("hello world")
+				expect(@pencil.instance_variable_get("@paper").text).to eq("hello wo   ")
+			end
+		end
+
 	end
 end

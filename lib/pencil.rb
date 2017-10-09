@@ -11,12 +11,18 @@ class Pencil
 
   def write(input)
     input.each_char do |char|
-      @paper.text.concat(char)
+      if @point_durability > 0
+        @paper.text.concat(char)
+      else
+        @paper.text.concat(' ')
+      end
+
       if char.match('[A-Z]')
         @point_durability -=2
       elsif char.match('\S')
         @point_durability -=1
       end
+
     end
   end
 end
