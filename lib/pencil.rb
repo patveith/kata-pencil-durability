@@ -12,7 +12,7 @@ class Pencil
   def write(input)
     input.each_char do |char|
       @paper.text.concat(char)
-      @point_durability -=1
+      @point_durability -=1 unless char == " "
     end
   end
 end

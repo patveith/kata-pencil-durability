@@ -58,5 +58,12 @@ describe Pencil do
 				expect(@pencil.point_durability).to eq(195)
 			end
 		end
+
+		context "when a pencil writes a space" do
+			it "should not lose any durability" do
+				@pencil.write(" ")
+				expect(@pencil.point_durability).to eq(200)
+			end
+		end
 	end
 end
