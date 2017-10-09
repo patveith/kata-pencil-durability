@@ -10,6 +10,9 @@ class Pencil
   end
 
   def write(input)
-    @paper.text.concat(input)
+    input.each_char do |char|
+      @paper.text.concat(char)
+      @point_durability -=1
+    end
   end
 end

@@ -52,5 +52,11 @@ describe Pencil do
 			end
 		end
 
+		context "when a pencil writes five lowercase characters" do
+			it "should lose five points of durability" do
+				@pencil.write("hello")
+				expect(@pencil.point_durability).to eq(195)
+			end
+		end
 	end
 end
