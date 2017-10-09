@@ -4,10 +4,10 @@
 class Pencil
 
   def initialize
+    @paper = Paper.new
   end
 
   def write(input)
-    print input
+    @paper.text.concat(input)
   end
-
 end
