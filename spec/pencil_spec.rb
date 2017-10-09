@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Pencil do
 	before :each do
-		@pencil = Pencil.new
+		@pencil = Pencil.new(Paper.new, 200)
 	end
 
 	describe "#initialize" do
@@ -23,8 +23,15 @@ describe Pencil do
 		context "when a new class is initialized with a paper object" do
 			it "should have that paper object" do
 				paper = Paper.new
-				pencil = Pencil.new(paper)
-				expect(pencil.instance_variable_get("@paper")).to eq(paper)
+				@pencil = Pencil.new(paper)
+				expect(@pencil.instance_variable_get("@paper")).to eq(paper)
+			end
+		end
+
+		context "when a new class is initialized with a durability" do
+			it "should have that durability" do
+				pencil = Pencil.new(Paper.new, 5)
+				expect(pencil.point_durability).to eq(5)
 			end
 		end
 	end
@@ -44,5 +51,6 @@ describe Pencil do
 				expect(@pencil.instance_variable_get("@paper").text).to eq("hello world")
 			end
 		end
+
 	end
 end
