@@ -59,6 +59,13 @@ describe Pencil do
 			end
 		end
 
+		context "when a pencil writes an uppercase character" do
+			it "should lose two points of durability" do
+				@pencil.write("A")
+				expect(@pencil.point_durability).to eq(198)
+			end
+		end
+
 		context "when a pencil writes a space" do
 			it "should not lose any durability" do
 				@pencil.write(" ")
@@ -70,6 +77,24 @@ describe Pencil do
 			it "should not lose any durability" do
 				@pencil.write("\n")
 				expect(@pencil.point_durability).to eq(200)
+			end
+		end
+
+		context "when a pencil writes both an uppercase and lowercase character" do
+			it "should lose three points of durability" do
+				@pencil.write("Aa")
+				expect(@pencil.point_durability).to eq(197)
+			end
+		end
+
+		context "when a pencil writes 'Hello World\\n'" do
+			it "should lose twelve points of durability" do
+				@pencil.write("Hello World\n")
+				expect(@pencil.point_durability).to eq(188)
+			end
+			it "should write a newline and space to the papers text" do
+				@pencil.write("Hello World\n")
+				expect(@pencil.instance_variable_get("@paper").text).to eq("Hello World\n")
 			end
 		end
 	end
