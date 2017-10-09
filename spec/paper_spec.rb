@@ -14,6 +14,10 @@ describe Paper do
       it "should be a paper object" do
 				expect(@paper).to be_instance_of(Paper)
 			end
+
+      it "should not have any text" do
+        expect(@paper.text).to eq("")
+      end
     end
   end
 end
