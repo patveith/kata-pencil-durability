@@ -1,1 +1,2 @@
 require 'pencil'
+require 'paper'
