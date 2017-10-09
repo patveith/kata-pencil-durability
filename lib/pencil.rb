@@ -6,4 +6,8 @@ class Pencil
   def initialize
   end
 
+  def write(input)
+    print input
+  end
+
 end

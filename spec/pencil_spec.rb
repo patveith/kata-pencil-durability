@@ -16,4 +16,14 @@ describe Pencil do
 		end
 	end
 
+	describe "#write" do
+		context "when a pencil is given a string" do
+			it "should write the string" do
+				pencil = Pencil.new
+
+				expect {pencil.write("hello")}.to output("hello").to_stdout
+			end
+		end
+	end
+
 end
