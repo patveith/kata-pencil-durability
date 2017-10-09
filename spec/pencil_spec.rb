@@ -18,14 +18,14 @@ describe Pencil do
 	end
 
 	describe "#write" do
-		context "when a pencil is given a string" do
+		context "when a pencil is told to write a string" do
 			it "should write the string to a paper" do
 				@pencil.write("hello")
 				expect(@pencil.instance_variable_get("@paper").text).to eq("hello")
 			end
 		end
 
-		context "when a pencil is given two strings" do
+		context "when a pencil is told to write two strings" do
 			it "should write both strings to a paper" do
 				@pencil.write("hello ")
 				@pencil.write("world")
