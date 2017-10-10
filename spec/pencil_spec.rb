@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Pencil do
 	before :each do
-		@pencil = Pencil.new(Paper.new, 200)
+		@pencil = Pencil.new(Paper.new, 200, 5)
 	end
 
 	describe "#initialize" do
@@ -30,8 +30,40 @@ describe Pencil do
 
 		context "when a new class is initialized with a durability" do
 			it "should have that durability" do
-				pencil = Pencil.new(Paper.new, 5)
-				expect(pencil.point_durability).to eq(5)
+				@pencil = Pencil.new(Paper.new, 5)
+				expect(@pencil.point_durability).to eq(5)
+			end
+		end
+
+		context "when a new class is initialized with a length" do
+			it "should have that length" do
+				@pencil = Pencil.new(Paper.new, 5, 10)
+				expect(@pencil.length).to eq(10)
+			end
+		end
+	end
+
+	describe "#sharpen" do
+		context "when a pencil with a nonzero length is sharpened" do
+			it "should restore it's original durability" do
+				@pencil.write("hello world")
+				expect(@pencil.point_durability).to eq(190)
+				@pencil.sharpen
+				expect(@pencil.point_durability).to eq(200)
+			end
+
+			it "should reduce it's length by one" do
+				@pencil.sharpen
+				expect(@pencil.length).to eq(4)
+			end
+		end
+		context "when a pencil with a length of zero is sharpened" do
+			it "should not restore it's original durabiltiy" do
+				@pencil.length = 0
+				@pencil.write("hello world")
+				@pencil.sharpen
+				expect(@pencil.point_durability).to eq(190)
+				expect(@pencil.length).to eq(0)
 			end
 		end
 	end
