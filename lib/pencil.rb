@@ -46,6 +46,16 @@ class Pencil
     @paper.text = paper_arr.join
   end
 
+  def edit(word_to_add)
+    spaceStartIndex = paper.text.index(paper.text.match(" {2,}").to_s) + 1
+    wordLengthIndex = word_to_add.length + spaceStartIndex -1
+
+    @paper.text[spaceStartIndex..wordLengthIndex].each_char.with_index(0) do |char, i|
+      @paper.text[spaceStartIndex+i] = "@"
+      @paper.text[spaceStartIndex+i] = word_to_add[i] if char == " "
+    end
+  end
+
   def sharpen
     if length > 0
       @point_durability = @saved_pointer_durability

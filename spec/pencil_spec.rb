@@ -51,6 +51,45 @@ describe Pencil do
 		end
 	end
 
+	describe "#edit" do
+	  before :each do
+	    @pencil.write("An apple a day keeps the doctor away")
+	    @pencil.erase("apple")
+	  end
+
+	  context "when a word has been erased" do
+	    it "should be able to write another shorter string" do
+	      @pencil.edit("pear")
+	      expect(@pencil.paper.text).to eq("An pear  a day keeps the doctor away")
+	    end
+
+	    it "should be able to write another same sized string" do
+	      @pencil.edit("olive")
+	      expect(@pencil.paper.text).to eq("An olive a day keeps the doctor away")
+	    end
+
+	    it "should be able to write another longer string where collisions become '@'" do
+	      @pencil.edit("cantaloupe")
+	      expect(@pencil.paper.text).to eq("An cantal@u@@y keeps the doctor away")
+	    end
+	  end
+
+	  context "when two words have been erased" do
+	    it "should be able to write a string into the first space" do
+	      @pencil.erase("keeps")
+	      @pencil.edit("olive")
+	      expect(@pencil.paper.text).to eq("An olive a day       the doctor away")
+	    end
+
+	    it "should be able to write two strings into both spaces" do
+	      @pencil.erase("keeps")
+	      @pencil.edit("olive")
+	      @pencil.edit("prevents")
+	      expect(@pencil.paper.text).to eq("An olive a day preven@@e doctor away")
+	    end
+	  end
+	end
+
 	describe "#erase" do
 		wood_chuck = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?"
 		chuck = "chuck"
