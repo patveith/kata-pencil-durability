@@ -60,21 +60,17 @@ class Pencil
   #
   # @param [String] to_erase A string to erase from the paper
   def erase(to_erase)
-    paper_arr = @paper.text.rpartition to_erase
-    erasedString = ""
-    return if paper_arr.find_index(to_erase)==nil
+    leftIndex = paper.text.rindex(paper.text.match(to_erase).to_s)
+    rightIndex = to_erase.length + leftIndex - 1
 
-    paper_arr[paper_arr.find_index(to_erase)].reverse.each_char do |char|
+    @paper.text[leftIndex..rightIndex].chars.reverse_each.with_index(0) do |char, i|
       if eraser_durability > 0 && char != " "
-        erasedString.concat(" ")
+        @paper.text[rightIndex-i] = " "
         @eraser_durability -= 1
       else
-        erasedString.concat(char)
+        @paper.text[rightIndex-i] = char
       end
     end
-
-    paper_arr[paper_arr.find_index(to_erase)] = erasedString.reverse
-    @paper.text = paper_arr.join
   end
 
   ##
