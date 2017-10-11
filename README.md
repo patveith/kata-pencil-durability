@@ -8,12 +8,14 @@
 $ sudo apt install ruby ruby-bundler
 ~~~~
 
-* To install the necessary dependencies use the following command in the project directory"
+* To install the necessary dependencies use the following command in the project directory
 ~~~~
 $ bundle install
 ~~~~
-  * This should install the RSpec and YARD gems
-  * RSpec was used to create the test framework
+  * The dependencies are as follows
+    * RSpec version 3.6.0
+    * YARD version 0.9.9
+  * RSpec was used to create and run the test framework
   * YARD was used to create documentation
 
 ## How to run
