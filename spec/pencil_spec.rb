@@ -20,7 +20,7 @@ describe Pencil do
 			end
 
 			it "should have a paper object" do
-				expect(@pencil.instance_variable_get("@paper")).to be_instance_of(Paper)
+				expect(@pencil.paper).to be_instance_of(Paper)
 			end
 		end
 
@@ -28,7 +28,7 @@ describe Pencil do
 			it "should have that paper object" do
 				paper = Paper.new
 				@pencil = Pencil.new(paper)
-				expect(@pencil.instance_variable_get("@paper")).to eq(paper)
+				expect(@pencil.paper).to eq(paper)
 			end
 		end
 
@@ -61,14 +61,14 @@ describe Pencil do
 		context "when a pencil is told to erase a string on the paper" do
 			it "should replace the last instance of that string with spaces" do
 				@pencil.erase(chuck)
-				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a woodchuck could       wood?")
+				expect(@pencil.paper.text).to eq("How much wood would a woodchuck chuck if a woodchuck could       wood?")
 			end
 		end
 
 		context "when a pencil is told to erase a string not on the paper" do
 			it "should not erase the string if it isn't on the paper" do
 				@pencil.erase("bear")
-				expect(@pencil.instance_variable_get("@paper").text).to eq(wood_chuck)
+				expect(@pencil.paper.text).to eq(wood_chuck)
 			end
 		end
 
@@ -76,7 +76,7 @@ describe Pencil do
 			it "should repace the last and second to last instace of that string with spaces" do
 				@pencil.erase(chuck)
 				@pencil.erase(chuck)
-				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a wood      could       wood?")
+				expect(@pencil.paper.text).to eq("How much wood would a woodchuck chuck if a wood      could       wood?")
 			end
 		end
 
@@ -98,7 +98,7 @@ describe Pencil do
 			it "should not erase any characters" do
 				@pencil.eraser_durability = 0
 				@pencil.erase(chuck)
-				expect(@pencil.instance_variable_get("@paper").text).to eq(wood_chuck)
+				expect(@pencil.paper.text).to eq(wood_chuck)
 			end
 		end
 
@@ -106,7 +106,7 @@ describe Pencil do
 			it "should erase characters while it has durability remaining" do
 				@pencil.eraser_durability = 3
 				@pencil.erase(chuck)
-				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a woodchuck could ch    wood?")
+				expect(@pencil.paper.text).to eq("How much wood would a woodchuck chuck if a woodchuck could ch    wood?")
 			end
 		end
 	end
@@ -140,7 +140,7 @@ describe Pencil do
 		context "when a pencil is told to write a string" do
 			it "should write the string to a paper" do
 				@pencil.write("hello")
-				expect(@pencil.instance_variable_get("@paper").text).to eq("hello")
+				expect(@pencil.paper.text).to eq("hello")
 			end
 		end
 
@@ -148,7 +148,7 @@ describe Pencil do
 			it "should write both strings to a paper" do
 				@pencil.write("hello ")
 				@pencil.write("world")
-				expect(@pencil.instance_variable_get("@paper").text).to eq("hello world")
+				expect(@pencil.paper.text).to eq("hello world")
 			end
 		end
 
@@ -195,7 +195,7 @@ describe Pencil do
 
 			it "should write a newline and space to the papers text" do
 				@pencil.write("Hello World\n")
-				expect(@pencil.instance_variable_get("@paper").text).to eq("Hello World\n")
+				expect(@pencil.paper.text).to eq("Hello World\n")
 			end
 		end
 
@@ -203,7 +203,7 @@ describe Pencil do
 			it "should only write spaces" do
 				@pencil.point_durability = 0
 				@pencil.write("hello world")
-				expect(@pencil.instance_variable_get("@paper").text).to eq("           ")
+				expect(@pencil.paper.text).to eq("           ")
 			end
 		end
 
@@ -211,7 +211,7 @@ describe Pencil do
 			it "should write characters while it has durability remaining" do
 				@pencil.point_durability = 7
 				@pencil.write("hello world")
-				expect(@pencil.instance_variable_get("@paper").text).to eq("hello wo   ")
+				expect(@pencil.paper.text).to eq("hello wo   ")
 			end
 		end
 
