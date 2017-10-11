@@ -27,6 +27,14 @@ class Pencil
     end
   end
 
+  def erase(to_erase)
+    paper_arr = @paper.text.rpartition to_erase
+    if paper_arr.find_index(to_erase)!=nil
+      paper_arr[paper_arr.find_index to_erase] = " " * to_erase.length
+    end
+    @paper.text = paper_arr.join
+  end
+
   def sharpen
     if length > 1
       @point_durability = @saved_pointer_durability
