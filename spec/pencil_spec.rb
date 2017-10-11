@@ -1,8 +1,12 @@
 require 'spec_helper'
 
 describe Pencil do
+	point_durability = 200
+	length = 5
+	eraser_durability = 100
+
 	before :each do
-		@pencil = Pencil.new(Paper.new, 200, 5, 100)
+		@pencil = Pencil.new(Paper.new, point_durability, length, eraser_durability)
 	end
 
 	describe "#initialize" do
@@ -30,22 +34,19 @@ describe Pencil do
 
 		context "when a new class is initialized with a pointer durability" do
 			it "should have that pointer durability" do
-				@pencil = Pencil.new(Paper.new, 5)
-				expect(@pencil.point_durability).to eq(5)
+				expect(@pencil.point_durability).to eq(point_durability)
 			end
 		end
 
 		context "when a new class is initialized with a length" do
 			it "should have that length" do
-				@pencil = Pencil.new(Paper.new, 5, 10)
-				expect(@pencil.length).to eq(10)
+				expect(@pencil.length).to eq(length)
 			end
 		end
 
 		context "when a new class is initialized with an eraser durability" do
 			it "should have that eraser durability" do
-				@pencil = Pencil.new(Paper.new, 200, 5, 50)
-				expect(@pencil.eraser_durability).to eq(50)
+				expect(@pencil.eraser_durability).to eq(eraser_durability)
 			end
 		end
 	end
@@ -53,10 +54,12 @@ describe Pencil do
 	describe "#erase" do
 		wood_chuck = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?"
 		chuck = "chuck"
+		before :each do
+			@pencil.write(wood_chuck)
+		end
 
 		context "when a pencil is told to erase a string on the paper" do
 			it "should replace the last instance of that string with spaces" do
-				@pencil.write(wood_chuck)
 				@pencil.erase(chuck)
 				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a woodchuck could       wood?")
 			end
@@ -64,7 +67,6 @@ describe Pencil do
 
 		context "when a pencil is told to erase a string not on the paper" do
 			it "should not erase the string if it isn't on the paper" do
-				@pencil.write(wood_chuck)
 				@pencil.erase("bear")
 				expect(@pencil.instance_variable_get("@paper").text).to eq(wood_chuck)
 			end
@@ -72,7 +74,6 @@ describe Pencil do
 
 		context "when a pencil is told to erase a string twice" do
 			it "should repace the last and second to last instace of that string with spaces" do
-				@pencil.write(wood_chuck)
 				@pencil.erase(chuck)
 				@pencil.erase(chuck)
 				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a wood      could       wood?")
@@ -81,24 +82,21 @@ describe Pencil do
 
 		context "when a pencil is told to erase a string with five non-whitespace chracters" do
 			it "should decrease the eraser durability by five" do
-				@pencil.write(wood_chuck)
 				@pencil.erase(chuck)
-				expect(@pencil.eraser_durability).to eq(95)
+				expect(@pencil.eraser_durability).to eq(eraser_durability-5)
 			end
 		end
 
 		context "when a pencil is told to erase a string with spaces" do
 			it "should only lose eraser durability for the non-whitespace characters" do
-				@pencil.write(wood_chuck)
 				@pencil.erase("much wood")
-				expect(@pencil.eraser_durability).to eq(92)
+				expect(@pencil.eraser_durability).to eq(eraser_durability-8)
 			end
 		end
 
 		context "when a pencil's eraser has no durability" do
 			it "should not erase any characters" do
-				@pencil = Pencil.new(Paper.new, 200, 5, 0)
-				@pencil.write(wood_chuck)
+				@pencil.eraser_durability = 0
 				@pencil.erase(chuck)
 				expect(@pencil.instance_variable_get("@paper").text).to eq(wood_chuck)
 			end
@@ -106,8 +104,7 @@ describe Pencil do
 
 		context "when a pencil's eraser runs out of durability while erasing" do
 			it "should erase characters while it has durability remaining" do
-				@pencil = Pencil.new(Paper.new, 200, 5, 3)
-				@pencil.write(wood_chuck)
+				@pencil.eraser_durability = 3
 				@pencil.erase(chuck)
 				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a woodchuck could ch    wood?")
 			end
@@ -115,27 +112,26 @@ describe Pencil do
 	end
 
 	describe "#sharpen" do
-		context "when a pencil with a nonzero length is sharpened" do
+		context "when a pencil with a nonzero length is sharpened after having written" do
 			it "should restore it's original durability" do
 				@pencil.write("hello world")
-				expect(@pencil.point_durability).to eq(190)
+				expect(@pencil.point_durability).to eq(point_durability-10)
 				@pencil.sharpen
-				expect(@pencil.point_durability).to eq(200)
+				expect(@pencil.point_durability).to eq(point_durability)
 			end
 
 			it "should reduce it's length by one" do
 				@pencil.sharpen
-				expect(@pencil.length).to eq(4)
+				expect(@pencil.length).to eq(length-1)
 			end
 		end
 
-		context "when a pencil with a length of zero is sharpened" do
+		context "when a pencil with a length of zero is sharpened after having written" do
 			it "should not restore it's original durabiltiy" do
 				@pencil.length = 0
 				@pencil.write("hello world")
 				@pencil.sharpen
-				expect(@pencil.point_durability).to eq(190)
-				expect(@pencil.length).to eq(0)
+				expect(@pencil.point_durability).to eq(point_durability-10)
 			end
 		end
 	end
@@ -159,42 +155,42 @@ describe Pencil do
 		context "when a pencil writes five lowercase characters" do
 			it "should lose five points of durability" do
 				@pencil.write("hello")
-				expect(@pencil.point_durability).to eq(195)
+				expect(@pencil.point_durability).to eq(point_durability-5)
 			end
 		end
 
 		context "when a pencil writes an uppercase character" do
 			it "should lose two points of durability" do
 				@pencil.write("A")
-				expect(@pencil.point_durability).to eq(198)
+				expect(@pencil.point_durability).to eq(point_durability-2)
 			end
 		end
 
 		context "when a pencil writes a space" do
 			it "should not lose any durability" do
 				@pencil.write(" ")
-				expect(@pencil.point_durability).to eq(200)
+				expect(@pencil.point_durability).to eq(point_durability)
 			end
 		end
 
 		context "when a pencil writes a newline" do
 			it "should not lose any durability" do
 				@pencil.write("\n")
-				expect(@pencil.point_durability).to eq(200)
+				expect(@pencil.point_durability).to eq(point_durability)
 			end
 		end
 
 		context "when a pencil writes both an uppercase and lowercase character" do
 			it "should lose three points of durability" do
 				@pencil.write("Aa")
-				expect(@pencil.point_durability).to eq(197)
+				expect(@pencil.point_durability).to eq(point_durability-3)
 			end
 		end
 
 		context "when a pencil writes 'Hello World\\n'" do
 			it "should lose twelve points of durability" do
 				@pencil.write("Hello World\n")
-				expect(@pencil.point_durability).to eq(188)
+				expect(@pencil.point_durability).to eq(point_durability-12)
 			end
 
 			it "should write a newline and space to the papers text" do
@@ -205,7 +201,7 @@ describe Pencil do
 
 		context "when a pencil has no durability left" do
 			it "should only write spaces" do
-				@pencil = Pencil.new(Paper.new, 0)
+				@pencil.point_durability = 0
 				@pencil.write("hello world")
 				expect(@pencil.instance_variable_get("@paper").text).to eq("           ")
 			end
@@ -213,7 +209,7 @@ describe Pencil do
 
 		context "when a pencil runs out of durability during writing" do
 			it "should write characters while it has durability remaining" do
-				@pencil = Pencil.new(Paper.new, 7)
+				@pencil.point_durability = 7
 				@pencil.write("hello world")
 				expect(@pencil.instance_variable_get("@paper").text).to eq("hello wo   ")
 			end
