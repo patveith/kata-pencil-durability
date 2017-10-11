@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Pencil do
 	before :each do
-		@pencil = Pencil.new(Paper.new, 200, 5)
+		@pencil = Pencil.new(Paper.new, 200, 5, 100)
 	end
 
 	describe "#initialize" do
@@ -28,8 +28,8 @@ describe Pencil do
 			end
 		end
 
-		context "when a new class is initialized with a durability" do
-			it "should have that durability" do
+		context "when a new class is initialized with a pointer durability" do
+			it "should have that pointer durability" do
 				@pencil = Pencil.new(Paper.new, 5)
 				expect(@pencil.point_durability).to eq(5)
 			end
@@ -39,6 +39,13 @@ describe Pencil do
 			it "should have that length" do
 				@pencil = Pencil.new(Paper.new, 5, 10)
 				expect(@pencil.length).to eq(10)
+			end
+		end
+
+		context "when a new class is initialized with an eraser durability" do
+			it "should have that eraser durability" do
+				@pencil = Pencil.new(Paper.new, 200, 5, 50)
+				expect(@pencil.eraser_durability).to eq(50)
 			end
 		end
 	end
@@ -69,6 +76,40 @@ describe Pencil do
 				@pencil.erase(chuck)
 				@pencil.erase(chuck)
 				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a wood      could       wood?")
+			end
+		end
+
+		context "when a pencil is told to erase a string with five non-whitespace chracters" do
+			it "should decrease the eraser durability by five" do
+				@pencil.write(wood_chuck)
+				@pencil.erase(chuck)
+				expect(@pencil.eraser_durability).to eq(95)
+			end
+		end
+
+		context "when a pencil is told to erase a string with spaces" do
+			it "should only lose eraser durability for the non-whitespace characters" do
+				@pencil.write(wood_chuck)
+				@pencil.erase("much wood")
+				expect(@pencil.eraser_durability).to eq(92)
+			end
+		end
+
+		context "when a pencil's eraser has no durability" do
+			it "should not erase any characters" do
+				@pencil = Pencil.new(Paper.new, 200, 5, 0)
+				@pencil.write(wood_chuck)
+				@pencil.erase(chuck)
+				expect(@pencil.instance_variable_get("@paper").text).to eq(wood_chuck)
+			end
+		end
+
+		context "when a pencil's eraser runs out of durability while erasing" do
+			it "should erase characters while it has durability remaining" do
+				@pencil = Pencil.new(Paper.new, 200, 5, 3)
+				@pencil.write(wood_chuck)
+				@pencil.erase(chuck)
+				expect(@pencil.instance_variable_get("@paper").text).to eq("How much wood would a woodchuck chuck if a woodchuck could ch    wood?")
 			end
 		end
 	end

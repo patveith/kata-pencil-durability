@@ -2,13 +2,14 @@
 # A class that represents the Pencil object
 #
 class Pencil
-  attr_accessor :point_durability, :length
+  attr_accessor :point_durability, :length, :eraser_durability
 
-  def initialize(paper = Paper.new, point_durability = 100, length = 10)
+  def initialize(paper = Paper.new, point_durability = 100, length = 10, eraser_durability = 100)
     @paper = paper
     @point_durability = point_durability
     @saved_pointer_durability = point_durability
     @length = length
+    @eraser_durability = eraser_durability
   end
 
   def write(input)
@@ -29,9 +30,19 @@ class Pencil
 
   def erase(to_erase)
     paper_arr = @paper.text.rpartition to_erase
-    if paper_arr.find_index(to_erase)!=nil
-      paper_arr[paper_arr.find_index to_erase] = " " * to_erase.length
+    erasedString = ""
+    return if paper_arr.find_index(to_erase)==nil
+    
+    paper_arr[paper_arr.find_index(to_erase)].reverse.each_char do |char|
+      if eraser_durability > 0 && char != " "
+        erasedString.concat(" ")
+        @eraser_durability -= 1
+      else
+        erasedString.concat(char)
+      end
     end
+
+    paper_arr[paper_arr.find_index(to_erase)] = erasedString.reverse
     @paper.text = paper_arr.join
   end
 
