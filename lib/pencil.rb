@@ -47,7 +47,7 @@ class Pencil
   end
 
   def sharpen
-    if length > 1
+    if length > 0
       @point_durability = @saved_pointer_durability
       @length -= 1
     end

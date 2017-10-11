@@ -73,7 +73,7 @@ describe Pencil do
 		end
 
 		context "when a pencil is told to erase a string twice" do
-			it "should repace the last and second to last instace of that string with spaces" do
+			it "should erase the last and second to last instance of that string" do
 				@pencil.erase(chuck)
 				@pencil.erase(chuck)
 				expect(@pencil.paper.text).to eq("How much wood would a woodchuck chuck if a wood      could       wood?")
@@ -123,6 +123,16 @@ describe Pencil do
 			it "should reduce it's length by one" do
 				@pencil.sharpen
 				expect(@pencil.length).to eq(length-1)
+			end
+		end
+
+		context "when a pencil of length one is sharpened" do
+			it "should not be able to be sharpened again" do
+				@pencil.length = 1
+				@pencil.sharpen
+				expect(@pencil.length).to eq(0)
+				@pencil.sharpen
+				expect(@pencil.length).to eq(0)
 			end
 		end
 
