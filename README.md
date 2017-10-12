@@ -3,7 +3,7 @@
 
 ## How to build
 * Project was built using ruby version 2.3.1 and ruby-bundler version 1.16.0 on Ubuntu 16.04
-* To install ruby and the ruby-bunder use the following command
+* If ruby or the ruby-bundler is not installed the following command can be used for Ubuntu and Debian
 ~~~~
 $ sudo apt install ruby ruby-bundler
 ~~~~
@@ -19,7 +19,11 @@ $ bundle install
   * YARD was used to create documentation
 
 ## How to run
-* After installing the RSpec gem run the following command to run tests
+* After running the bundler the following command can be used to to run tests
+~~~~
+$ rake
+~~~~
+* Or to run the tests directly with the RSpec gem in the project directory you can run the following command
 ~~~~
 $ rspec spec/
 ~~~~
@@ -27,7 +31,7 @@ $ rspec spec/
 
 
 ## How to view documentation
-* After installing the yard gem run the following command then navigate
+* After running the bundler the following command can be used to to view formatted documentation
 to http://localhost:8808/
 ~~~~
 $ yard server
