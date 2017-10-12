@@ -132,7 +132,7 @@ describe Pencil do
 			end
 		end
 
-		context "when a pencil is told to erase a string with five non-whitespace chracters" do
+		context "when a pencil is told to erase a string with five non-whitespace characters" do
 			it "should decrease the eraser durability by five" do
 				@pencil.erase(chuck)
 				expect(@pencil.eraser_durability).to eq(eraser_durability-5)
@@ -189,7 +189,7 @@ describe Pencil do
 		end
 
 		context "when a pencil with a length of zero is sharpened after having written" do
-			it "should not restore it's original durabiltiy" do
+			it "should not restore it's original durability" do
 				@pencil.length = 0
 				@pencil.write("hello world")
 				@pencil.sharpen
