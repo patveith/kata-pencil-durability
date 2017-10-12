@@ -39,14 +39,9 @@ class Pencil
     to_write.each_char do |char|
       if @point_durability > 0
         @paper.text.concat(char)
+        decrement_point_durability(char)
       else
         @paper.text.concat(' ')
-      end
-
-      if char.match('[A-Z]')
-        @point_durability -= 2
-      elsif char.match('\S')
-        @point_durability -= 1
       end
     end
   end
@@ -85,8 +80,12 @@ class Pencil
     wordLengthIndex = to_edit.length + spaceStartIndex -1
 
     @paper.text[spaceStartIndex..wordLengthIndex].each_char.with_index(0) do |char, i|
-      @paper.text[spaceStartIndex+i] = "@"
-      @paper.text[spaceStartIndex+i] = to_edit[i] if char == " "
+      if @point_durability > 0
+        char_to_write = "@"
+        char_to_write = to_edit[i] if char == " "
+        @paper.text[spaceStartIndex+i] = char_to_write
+        decrement_point_durability(char_to_write)
+      end
     end
   end
 
@@ -98,6 +97,20 @@ class Pencil
     if length > 0
       @point_durability = @saved_pointer_durability
       @length -= 1
+    end
+  end
+
+  ##
+  # Decrements the pencils point_durability by the correct amount based on the
+  # character passed in.  Minus two for an uppercase, minus one for a lowercase
+  # and does nothing for whitespace.
+  #
+  # @param [Char] char A character about to be written
+  def decrement_point_durability(char)
+    if char.match('[A-Z]')
+      @point_durability -= 2
+    elsif char.match('\S')
+      @point_durability -= 1
     end
   end
 end

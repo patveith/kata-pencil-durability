@@ -72,6 +72,12 @@ describe Pencil do
 	      @pencil.edit("cantaloupe")
 	      expect(@pencil.paper.text).to eq("An cantal@u@@y keeps the doctor away")
 	    end
+
+			it "should be able to write another string while point_durability remains" do
+				@pencil.point_durability = 4
+				@pencil.edit("olive")
+				expect(@pencil.paper.text).to eq("An oliv  a day keeps the doctor away")
+			end
 	  end
 
 	  context "when two words have been erased" do
@@ -88,6 +94,13 @@ describe Pencil do
 	      expect(@pencil.paper.text).to eq("An olive a day preven@@e doctor away")
 	    end
 	  end
+
+		context "when a word has been erased and another word has been written in" do
+			it "should decrease the pencil point durability" do
+				@pencil.edit("apple")
+				expect(@pencil.point_durability).to eq(point_durability-30-5)
+			end
+		end
 	end
 
 	describe "#erase" do
